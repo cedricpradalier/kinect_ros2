@@ -15,11 +15,6 @@ rclcpp::node_interfaces::NodeBaseInterface::SharedPtr get_depth_image_proc_compo
 
   rclcpp::NodeOptions options;
   options.use_intra_process_comms(true);
-  std::vector<std::string> arguments {
-    "image_rect:=depth/image_raw",
-    "camera_info:=depth/camera_info"
-  };
-  options.arguments(arguments);
 
   rclcpp::node_interfaces::NodeBaseInterface::SharedPtr node;
   for (auto clazz : classes) {
@@ -47,10 +42,13 @@ int main(int argc, char * argv[])
   options.use_intra_process_comms(true);
 
   auto kinect_component = std::make_shared<kinect_ros2::KinectRosComponent>(options);
-  auto depth_image_proc_component = get_depth_image_proc_component();
 
   exec.add_node(kinect_component);
+#if 0
+  
+  auto depth_image_proc_component = get_depth_image_proc_component();
   exec.add_node(depth_image_proc_component);
+#endif
 
   exec.spin();
 
